@@ -10,6 +10,8 @@ ui <- fluidPage(
       width = 4, 
       h4("Patient"),
       fluidRow(
+        column(width = 8, textInput("name", label = "Name")),
+        column(width = 4, textInput("ID", label = "ID number")),
         column(width = 4, numericInput("BW", label = "Weight (kg)", value = 25)),
         column(width = 3, numericInput("HT", label = "Height (cm)", value = 126)),
         column(width = 5, numericInput("BSA", label = "Body surface area (m2)", value = 0.93)),
@@ -30,7 +32,10 @@ ui <- fluidPage(
         rHandsontableOutput("concentrationEdit")
       ),
       h4("Estimate!"), 
-      actionButton("go", "Go!")
+      fluidRow(
+        column(width = 4, actionButton("go", "Go!")),
+        column(width = 6, uiOutput("download"))
+      )
     ), 
     mainPanel(
       width = 8,
@@ -158,6 +163,33 @@ server <- function(input, output) {
     updateTabsetPanel(inputId = "tabset", selected = "Concentration vs time - plot")
   })
   
+  output$archiver <- downloadHandler(
+    filename = function(){
+      paste0("busulfan_", Sys.Date(),".html")
+    },
+    content = function(file) {
+      tempReport <- file.path(tempdir(), "busulfan_report.Rmd")
+      file.copy("busulfan_report.Rmd", tempReport, overwrite = TRUE)
+      
+      params <- list(
+        all_inputs = reactiveValuesToList(input),
+        re_apriori = re_apriori(),
+        concentrationData = concentrationData(), 
+        dosingData = dosingData(),
+        nmtranData = nmtranData(),
+        re_post = re_post(),
+        re_plot = re_plot()
+      )
+      rmarkdown::render(tempReport,
+                        output_file = file,
+                        params = params,
+                        envir = new.env(parent = globalenv())
+      )
+    }
+  )
+  output$download <- renderUI({
+      downloadButton('archiver', 'Save')
+  })
 }
 
 # Run the application 

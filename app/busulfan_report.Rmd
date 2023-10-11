@@ -1,0 +1,62 @@
+---
+title: "Busulfan Report"
+output: html_document
+date: "`r Sys.time()`"
+params:
+  all_inputs: NA
+  re_apriori: NA
+  concentrationData : NA
+  dosingData : NA
+  nmtranData: NA
+  re_post: NA
+  re_plot: NA
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+# All inputs
+
+```{r}
+mat <- do.call(rbind, params$all_inputs[c("ID", "name", "AUCTARGET", "BSA", "HT", "BW", "ndays", "gsta1", "malign")])
+knitr::kable(
+  data.frame(
+    values = mat[,1]
+  )
+)
+```
+
+# Dosing data
+```{r}
+knitr::kable(params$dosingData)
+```
+
+# Concentration data
+```{r}
+knitr::kable(params$concentrationData)
+```
+
+# A priori dosing
+
+```{r}
+knitr::kable(params$re_apriori)
+```
+
+# Data
+
+```{r}
+knitr::kable(params$nmtranData)
+```
+
+# A posteriori dosing
+
+```{r}
+knitr::kable(params$re_post)
+```
+
+
+```{r}
+params$re_plot
+```
+
