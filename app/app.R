@@ -14,10 +14,12 @@ ui <- fluidPage(
         column(width = 12, numericInput("AUCTARGET", label = "Cumulative target AUC (micromolar.h)", value = 16000))
       ), 
       h4("Dosing"),
+      h6("Dose unit: mg."),
       fluidRow(
         rHandsontableOutput("dosingEdit")
       ), 
-      h4("TDM Concentration"),
+      h4("TDM Concentrations"),
+      h6("Concentration unit: ng/mL"),
       fluidRow(
         rHandsontableOutput("concentrationEdit")
       ),
