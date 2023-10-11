@@ -139,3 +139,31 @@ make_plot <- function(est, post){
     augment(data = data2, nocb = FALSE, end = max(data2$time)) %>% 
     plot()
 }
+
+apriori <- function(bw, malign, gsta1, auc, ndays){
+  
+  stopifnot(sapply(list(bw, malign, gsta1, auc, ndays), length) == 1)
+  stopifnot(is.numeric(bw), is.numeric(auc), is.numeric(ndays))
+  stopifnot(is.logical(malign), is.logical(gsta1))
+  stopifnot(ndays %in% c(4,5))
+  
+  if(is.na(gsta1)){
+    cl01 <- 6.16 * (bw/25)^0.821 * 0.810^malign
+    cl234 <- cl01 * 0.942
+  } else {
+    cl01 <- 6.38 * (bw/25)^0.786 * 0.896^malign * 0.894^gsta1 
+    cl234 <- cl01 * 0.951
+  }
+  
+  daily_cl <- c(rep(cl01, ndays-3), rep(cl234, 3))
+  daily_auc <- rep(auc/ndays, ndays)
+  
+  ans <- data.frame(
+    DAY = seq.int(to = 4, by = 1, length.out = ndays), 
+    CL = signif(daily_cl, 3), 
+    AUC = as.integer(daily_auc), 
+    DOSE = as.integer(daily_cl * daily_auc / 246.304)
+  )
+  names(ans) <- c("DAY", "CL (L/h)", "AUC (micromolar.h)", "DOSE (mg)")
+  ans
+}

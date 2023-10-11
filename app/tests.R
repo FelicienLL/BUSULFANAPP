@@ -19,3 +19,5 @@ daaata <- make_data(dose_data, conc_data, bw = 25)
 eeeest <- mapbayest(mooodel, daaata)
 new_post <- make_post(dose_data, conc_data, eeeest, auc = 16000)
 
+
+apriori(bw = 45, malign = TRUE, gsta1 = TRUE, auc = 18000, ndays = 5)

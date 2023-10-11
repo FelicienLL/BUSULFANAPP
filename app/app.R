@@ -10,8 +10,14 @@ ui <- fluidPage(
       width = 4, 
       h4("Patient"),
       fluidRow(
-        column(width = 6, numericInput("BW", label = "Body weight (kg)", value = 25)),
-        column(width = 12, numericInput("AUCTARGET", label = "Cumulative target AUC (micromolar.h)", value = 16000))
+        column(width = 4, numericInput("BW", label = "Weight (kg)", value = 25)),
+        column(width = 3, numericInput("HT", label = "Height (cm)", value = 126)),
+        column(width = 5, numericInput("BSA", label = "Body surface area (m2)", value = 0.93)),
+        column(width = 12, 
+               radioButtons("malign", label = "Malignancy", choices = list(Yes = TRUE, No = FALSE), selected = FALSE, inline = TRUE),
+               radioButtons("gsta1", label = "GSTA1 Polymorphism", choices = list(Yes = TRUE, No = FALSE, Unknown = NA_character_), selected = NA_character_, inline = TRUE), 
+               radioButtons("ndays", label = "Number of days", choices = c(4, 5), inline = TRUE), 
+               numericInput("AUCTARGET", label = "Cumulative target AUC (micromolar.h)", value = 16000))
       ), 
       h4("Dosing"),
       h6("Dose unit: mg."),
@@ -31,6 +37,11 @@ ui <- fluidPage(
       fluidRow(
         tabsetPanel(
           id = "tabset",
+          selected = 2,
+          tabPanel(
+            title = "A priori - table", 
+            tableOutput("aprioriTable")
+          ),
           tabPanel(
             title = "Data - table", 
             tableOutput("dataTable")
@@ -55,6 +66,15 @@ ui <- fluidPage(
 server <- function(input, output) {
   MWbusulfan <- 246.304
   mod <- mread("busulfan_shiny.cpp")
+  
+  re_apriori <- reactive({
+    apriori(
+      bw = input$BW, 
+      malign = as.logical(input$malign),
+      gsta1 = as.logical(input$gsta1),
+      auc = input$AUCTARGET, 
+      ndays = as.numeric(input$ndays))
+  })
   
   dosingData <- reactive({
     if(is.null(input$dosingEdit)){
@@ -114,6 +134,10 @@ server <- function(input, output) {
   re_plot <- reactive({
     shiny::req(re_est())
     make_plot(est = re_est(), post = re_post())
+  })
+  
+  output$aprioriTable <- renderTable({
+    re_apriori()
   })
   
   output$dataTable <- renderTable({
