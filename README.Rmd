@@ -30,9 +30,10 @@ Both rely on [mapbayr](https://github.com/FelicienLL/mapbayr), a package dedicat
 The application was developped as a proof-of-concept of a model-informed precision dosing software dedicated to the calculation of doses of busulfan in the Thai pediatric population. It is meant to be used for research, educational and communication purposes. It comes with no guarantee. It is not an electronic medical device. The authors of this application are not responsible for the use of this application in a clinical context for the treatment of actual patients.
 
 # Installation
-Clone the repository or download its content in a .zip file after clicking on the green "Code" icon.
 
-Note that the following packages, and their dependencies, are required to make the application work: 
+## Prerequisites
+
+The following packages, and their dependencies, are required to make the application work: 
 
 ```{r, eval = FALSE}
 install.packages("mapbayr") # and mrgsolve dependency
@@ -44,4 +45,16 @@ install.packages("rhandsontable")
 
 If you are using a Windows computer, you need to have Rtools installed to compile C++. Visit [the CRAN website](https://cran.r-project.org/bin/windows/Rtools/) for more information.
 
-While it is installed, launch the application in the script called "app/app.R"
+## Run the application
+
+You can open the application from R by calling: 
+
+```{r, eval = FALSE}
+shiny::runGitHub("FelicienLL/BUSULFANAPP", subdir = "app")
+```
+
+Alternatively, you can clone the repository or download its content in a .zip file after clicking on the green "Code" icon on the bottom right of this web page. Unzip it and simply launch the application in the script called "app/app.R".
+
+![](capture.png)
+
+

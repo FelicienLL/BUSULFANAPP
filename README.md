@@ -26,11 +26,10 @@ clinical context for the treatment of actual patients.
 
 # Installation
 
-Clone the repository or download its content in a .zip file after
-clicking on the green “Code” icon.
+## Prerequisites
 
-Note that the following packages, and their dependencies, are required
-to make the application work:
+The following packages, and their dependencies, are required to make the
+application work:
 
 ``` r
 install.packages("mapbayr") # and mrgsolve dependency
@@ -45,5 +44,17 @@ to compile C++. Visit [the CRAN
 website](https://cran.r-project.org/bin/windows/Rtools/) for more
 information.
 
-While it is installed, launch the application in the script called
-“app/app.R”
+## Run the application
+
+You can open the application from R by calling:
+
+``` r
+shiny::runGitHub("FelicienLL/BUSULFANAPP", subdir = "app")
+```
+
+Alternatively, you can clone the repository or download its content in a
+.zip file after clicking on the green “Code” icon on the bottom right of
+this web page. Unzip it and simply launch the application in the script
+called “app/app.R”.
+
+![](capture.png)
