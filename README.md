@@ -34,6 +34,7 @@ application work:
 ``` r
 install.packages("mapbayr") # and mrgsolve dependency
 install.packages("shiny")
+install.packages("ggplot2")
 install.packages("tidyr") # and tibble and dplyr dependencies
 install.packages("lubridate")
 install.packages("rhandsontable")
