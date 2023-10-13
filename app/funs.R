@@ -90,9 +90,11 @@ make_post <- function(ddata, cdata, est, auc){
   idataeta <- get_eta(est)
   idataeta[paste0("ETA", day_eta$ETAnum)] <- day_eta$ETAval
   
+  BW <- unique(get_data(est)$BW)
+  
   tabCL <- est$model %>% 
     data_set(
-      dplyr::bind_cols(ID = 1, time = 0, DAY = 0:4, as.list(idataeta))
+      dplyr::bind_cols(ID = 1, time = 0, DAY = 0:4, BW = BW, as.list(idataeta))
     ) %>% 
     zero_re() %>% 
     mrgsim(end = -1, carry_out = "DAY", output = "df", Req = "CL") %>% 

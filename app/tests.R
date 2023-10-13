@@ -30,3 +30,44 @@ rmarkdown::render("app/busulfan_report.Rmd", params = list(
   re_post = new_post,
   re_plot = plooot
 ))
+
+mooodel %>% 
+  adm_rows(time = 0, rate = 85/3, amt = 85, cmt = 1) %>% 
+  obs_rows(
+    time = c(180, 195, 210, 240, 300, 360, 480)/60, 
+    DV = c(5530, 5240, 4350, 3890, 2710, 2370, 1170), 
+    cmt = 1
+  ) %>% 
+  mapbayest()
+
+
+mooodel %>% 
+  adm_rows(time = 0, rate = 85/3, amt = 85, cmt = 1, 18.35) %>% 
+  obs_rows(
+    time = c(195, 300, 480)/60, 
+    DV = c(5240, 2710, 1170), 
+    cmt = 1
+  ) %>% 
+  mapbayest()
+
+dose_data2 <- data.frame(
+  DAY = 0:4,
+  Date = paste0(11:15, "/10/2023"),
+  Dose = c(0, 85, 0, 0, 0),
+  Hour_start = rep(NA_character_, 5),
+  Hour_end = rep(NA_character_, 5)
+)
+
+conc_data2 <- data.frame(
+  DAY = rep(c(1L,3L), each = 3),
+  Date = rep(c("12/10/2023", "14/10/2023"), each = 3),
+  Hour_sample = c("3:25" , "5h00", "8h00", rep(NA_character_, 3)),
+  Concentration = c(c(5240, 2710, 1170), rep(NA, 3)),
+  Exclude = rep(FALSE, 6)
+)
+
+data2 <-  make_data(dose_data2, conc_data2, bw = 18.35)
+eeeest2 <- mapbayest(mooodel, data2)
+new_post <- make_post(dose_data2, conc_data2, eeeest2, auc = 16000)
+# should find AUC around 6500
+
