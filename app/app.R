@@ -19,7 +19,7 @@ ui <- fluidPage(
                radioButtons("malign", label = "Malignancy", choices = list(Yes = TRUE, No = FALSE), selected = FALSE, inline = TRUE),
                radioButtons("gsta1", label = "GSTA1 Polymorphism", choices = list(Yes = TRUE, No = FALSE, Unknown = NA_character_), selected = NA_character_, inline = TRUE), 
                radioButtons("ndays", label = "Number of days", choices = c(4, 5), inline = TRUE), 
-               numericInput("AUCTARGET", label = "Cumulative target AUC (micromolar.h)", value = 16000))
+               numericInput("AUCTARGET", label = "Cumulative target AUC (micromolar.min)", value = 16000))
       ), 
       h4("Dosing"),
       h6("Dose unit: mg."),
